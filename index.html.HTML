@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Typing Master Pro v14.0</title>
+<style>
+/* ================= PREMIUM THEME ================= */
+:root {
+  --bg: #0b0f19; --surface: #151a28; --surface-hover: #1e2538;
+  --primary: #3b82f6; --accent: #ef4444; --green: #10b981; --gold: #f59e0b;
+  --text: #f8fafc; --text-muted: #94a3b8; --border: #334155;
+  --c-pinky: #8b5cf6; --c-ring: #10b981; --c-mid: #f59e0b; --c-index: #3b82f6; --c-thumb: #64748b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
+
+/* Tabs & Sidebar */
+.sidebar { width: 280px; background: #0f131f; border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 10; box-shadow: 2px 0 15px rgba(0,0,0,0.5); }
+.logo { padding: 25px 20px; background: linear-gradient(135deg, #151a28, #0b0f19); border-bottom: 2px solid var(--primary); text-align: center; }
+.logo h1 { font-size: 22px; color: #fff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.logo p { font-size: 11px; color: var(--gold); letter-spacing: 1.5px; font-weight: bold;}
+
+.lesson-list { flex: 1; overflow-y: auto; padding: 10px 0; }
+.lesson-list::-webkit-scrollbar { width: 5px; }
+.lesson-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.l-group { margin-bottom: 10px; }
+.l-group-title { font-size: 12px; color: var(--green); text-transform: uppercase; padding: 6px 20px; font-weight: bold; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2px;}
+.l-item { padding: 10px 20px 10px 30px; cursor: pointer; font-size: 14px; color: #cbd5e1; transition: 0.2s; border-left: 4px solid transparent; display: flex; justify-content: space-between; align-items: center;}
+.l-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.l-item.active { background: rgba(59,130,246,0.15); border-left-color: var(--primary); color: #fff; font-weight: bold; }
+.locked-icon { color: var(--accent); font-size: 12px; }
+
+/* Main Area */
+.main-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative;}
+.top-nav { height: 60px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
+.top-title { font-size: 20px; font-weight: bold; color: var(--primary); }
+.controls { display: flex; gap: 20px; font-size: 14px; font-weight: bold; align-items: center; }
+.toggle-btn { cursor: pointer; padding: 5px 10px; background: var(--surface-hover); border-radius: 5px; border: 1px solid var(--border); transition: 0.2s;}
+.toggle-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary);}
+
+.view-container { display: flex; flex-direction: column; height: calc(100vh - 60px); padding: 15px 30px; max-width: 1200px; margin: 0 auto; width: 100%; gap: 15px; }
+
+/* Dashboard */
+.dashboard { display: flex; gap: 15px; }
+.stat-box { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.stat-val { font-size: 28px; font-weight: 800; color: #fff; display: block; }
+.stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-top: 3px; display: block; font-weight: bold;}
+
+/* Typing Interface */
+.typing-container { position: relative; background: #0b0f19; border: 2px solid var(--border); border-radius: 12px; padding: 25px; box-shadow: inset 0 5px 20px rgba(0,0,0,0.4); flex-shrink: 0;}
+.kruti-font { font-family: 'Kruti Dev 010', Arial, sans-serif; font-size: 28px; letter-spacing: 1px; line-height: 1.6; }
+
+.text-display { min-height: 95px; max-height: 140px; overflow-y: auto; color: #fff; font-weight: 500; margin-bottom: 15px; word-break: break-all; white-space: pre-wrap; }
+.char { color: #64748b; transition: 0.1s;}
+.char.correct { color: var(--green); text-shadow: 0 0 8px rgba(16,185,129,0.5); }
+.char.wrong { color: var(--accent); background: rgba(239,68,68,0.3); border-radius: 4px; border-bottom: 2px solid var(--accent); }
+.char.current { color: #fff; border-bottom: 3px solid var(--primary); animation: blink 0.8s infinite; }
+@keyframes blink { 50% { border-color: transparent; } }
+
+.input-box { width: 100%; height: 60px; background: var(--surface); border: 2px solid var(--border); border-radius: 8px; padding: 10px 20px; color: #fff; outline: none; resize: none; transition: 0.3s; font-size: 26px; word-break: break-all;}
+.input-box:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(59,130,246,0.2); }
+
+.progress-container { width: 100%; height: 6px; background: var(--border); border-radius: 3px; margin-top: 15px; overflow: hidden;}
+.progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--green)); transition: width 0.3s linear; }
+
+/* Overlays */
+.overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11,15,25,0.85); display: none; flex-direction: column; justify-content: center; align-items: center; border-radius: 10px; z-index: 20; backdrop-filter: blur(4px); }
+.btn-start { background: linear-gradient(135deg, var(--primary), #2563eb); color: #fff; border: none; padding: 12px 35px; font-size: 20px; font-weight: bold; border-radius: 50px; box-shadow: 0 5px 15px rgba(59,130,246,0.4); text-transform: uppercase; cursor: pointer;}
+.end-msg { font-size: 28px; color: var(--green); font-weight: bold; margin-bottom: 10px; text-shadow: 0 0 10px rgba(16,185,129,0.5);}
+.end-stats { font-size: 18px; color: #fff; margin-bottom: 20px; }
+.end-controls { display: flex; gap: 15px; font-size: 16px; font-weight: bold; color: var(--text-muted);}
+.end-controls span { color: var(--gold); background: #000; padding: 4px 10px; border-radius: 5px; margin-right: 5px; font-size: 14px;}
+.btn-cert { background: var(--gold); color: #000; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 15px; display: none;}
+
+/* PRO PAYWALL MODAL */
+.pro-modal { background: var(--surface); padding: 40px; border-radius: 15px; border: 2px solid var(--gold); text-align: center; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+.pro-modal h2 { color: var(--gold); margin-bottom: 15px; font-size: 26px; }
+.pro-modal p { color: var(--text-muted); font-size: 15px; margin-bottom: 20px; line-height: 1.5; }
+.upi-box { background: rgba(0,0,0,0.5); border: 1px dashed var(--green); padding: 15px; border-radius: 8px; font-size: 22px; color: var(--green); margin-bottom: 25px; font-weight: bold; letter-spacing: 1px;}
+.license-input { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid var(--border); background: #0b0f19; color: #fff; margin-bottom: 20px; text-align: center; }
+.license-input:focus { border-color: var(--gold); outline: none; }
+.pro-btns { display: flex; gap: 10px; justify-content: center; }
+.btn-unlock { background: var(--green); color: #000; border: none; padding: 12px 25px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 16px; }
+.btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 12px 25px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 16px; }
+
+/* Visual Keyboard */
+.keyboard { background: #0b0f19; border: 2px solid var(--border); border-radius: 12px; padding: 15px; margin-top: 0; user-select: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: opacity 0.3s;}
+.kb-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 6px; }
+.key { border: 1px solid rgba(255,255,255,0.1); border-bottom: 4px solid rgba(0,0,0,0.5); border-radius: 6px; min-width: 50px; height: 55px; position: relative; transition: 0.1s; background: var(--surface); }
+
+.f-pinky { border-top: 3px solid var(--c-pinky); }
+.f-ring { border-top: 3px solid var(--c-ring); }
+.f-mid { border-top: 3px solid var(--c-mid); }
+.f-index { border-top: 3px solid var(--c-index); }
+.f-thumb { border-top: 3px solid var(--c-thumb); }
+
+.key.wide { min-width: 80px; } .key.xwide { min-width: 110px; } .key.space { min-width: 350px; }
+.key .hi-shift { position: absolute; top: 4px; left: 6px; font-size: 16px; color: #fca5a5; font-weight: bold; font-family: 'Kruti Dev 010', Arial; }
+.key .hi-norm { position: absolute; bottom: 4px; left: 6px; font-size: 22px; color: #93c5fd; font-weight: bold; font-family: 'Kruti Dev 010', Arial; }
+.key .en-label { position: absolute; bottom: 2px; right: 4px; font-size: 10px; color: rgba(255,255,255,0.3); font-weight: bold; font-family: Arial; }
+
+.key.glow { background: rgba(59,130,246,0.2); border-color: #fff !important; transform: translateY(-2px); border-bottom-width: 6px; box-shadow: 0 0 15px var(--primary), inset 0 0 10px rgba(59,130,246,0.5) !important;}
+.key.active-press { transform: translateY(3px); border-bottom-width: 1px; filter: brightness(0.8); background: rgba(255,255,255,0.1); }
+
+/* Print Styles for Certificate */
+@media print {
+    body * { visibility: hidden; }
+    #certificate, #certificate * { visibility: visible; }
+    #certificate { position: absolute; left: 0; top: 0; width: 100%; text-align: center; padding: 50px; background: #fff; color: #000; border: 10px solid var(--primary); }
+    .c-title { font-size: 40px; color: var(--primary); margin-bottom: 20px;}
+    .c-score { font-size: 30px; font-weight: bold; color: var(--green); margin: 20px 0;}
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">
+        <h1>Typing Master</h1>
+        <p>PRO COMMERCIAL EDITION</p>
+    </div>
+    <div class="lesson-list" id="lesson-list"></div>
+</div>
+
+<div class="main-area">
+    <div class="top-nav">
+        <div class="top-title" id="lesson-title">Lesson 1.1 - Home Row</div>
+        <div class="controls">
+            <div class="toggle-btn" onclick="toggleNinja()" id="ninja-btn">🥷 Ninja Mode: OFF</div>
+            <div class="toggle-btn" onclick="toggleSound()" id="snd-status" style="color:var(--green)">🔊 Sound: ON</div>
+        </div>
+    </div>
+
+    <div class="view-container active" id="view-practice">
+        <div class="dashboard">
+            <div class="stat-box"><span class="stat-val" id="stat-wpm">0</span><span class="stat-lbl">स्पीड (WPM)</span></div>
+            <div class="stat-box"><span class="stat-val" id="stat-acc" style="color:var(--green);">0%</span><span class="stat-lbl">सटीकता</span></div>
+            <div class="stat-box"><span class="stat-val" id="stat-time" style="color:var(--gold);">00:00</span><span class="stat-lbl">समय (Min:Sec)</span></div>
+        </div>
+
+        <div class="typing-container">
+            <!-- Start Overlay -->
+            <div class="overlay" id="start-overlay" style="display:flex;">
+                <button class="btn-start" onclick="startByButton()">Press ENTER to Start</button>
+            </div>
+            
+            <!-- Pro Paywall Overlay -->
+            <div class="overlay" id="paywall-overlay" style="z-index: 50;">
+                <div class="pro-modal">
+                    <h2>🔒 Unlock Pro Version</h2>
+                    <p>आगे के सभी एडवांस लेसन्स और सर्टिफिकेट प्रिंट करने की सुविधा के लिए ₹50 का वन-टाइम पेमेंट करें।</p>
+                    <div class="upi-box">UPI ID: 8319753340@upi</div>
+                    <p>पेमेंट करने के बाद यहाँ अपनी सीक्रेट लाइसेंस की (License Key) डालें:</p>
+                    <input type="text" id="license-key" class="license-input" placeholder="Enter Secret Password">
+                    <div class="pro-btns">
+                        <button class="btn-unlock" onclick="verifyLicense()">Unlock Now</button>
+                        <button class="btn-cancel" onclick="closePaywall()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End Overlay -->
+            <div class="overlay" id="end-overlay">
+                <div class="end-msg">🎉 अभ्यास पूरा हुआ!</div>
+                <div class="end-stats" id="end-stats-txt">स्पीड: 0 WPM | सटीकता: 0%</div>
+                <div class="end-controls">
+                    <div><span>Enter</span> Next Lesson</div>
+                    <div><span>Backspace</span> Restart</div>
+                </div>
+                <button class="btn-cert" id="cert-btn" onclick="printCertificate()">🖨️ Print Certificate</button>
+            </div>
+            
+            <div class="text-display kruti-font" id="text-display"></div>
+            <textarea class="input-box kruti-font" id="type-input" autocomplete="off" spellcheck="false" disabled></textarea>
+            
+            <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
+        </div>
+
+        <div class="keyboard" id="kb"><div class="kb-rows" id="kb-rows"></div></div>
+    </div>
+</div>
+
+<!-- Hidden Certificate -->
+<div id="certificate" style="display:none;">
+    <h1 class="c-title">Certificate of Achievement</h1>
+    <h2>This certifies that you have successfully completed the Typing Test.</h2>
+    <div class="c-score" id="cert-score">Speed: 0 WPM | Accuracy: 0%</div>
+    <p>Typing Master Pro Enterprise Edition</p>
+</div>
+
+<script>
+// ================= LICENSE & PAYWALL LOGIC =================
+const SECRET_PASSWORD = "typingsoftwared@y@123445";
+let isProUnlocked = localStorage.getItem('htm_pro_active') === 'true';
+
+function verifyLicense() {
+    const inputKey = document.getElementById('license-key').value.trim();
+    if (inputKey === SECRET_PASSWORD) {
+        localStorage.setItem('htm_pro_active', 'true');
+        isProUnlocked = true;
+        alert("Success! Premium Version Unlocked. All lessons and certificate features are now available offline.");
+        document.getElementById('paywall-overlay').style.display = 'none';
+        buildSidebar(); // Rebuild sidebar to remove lock icons
+        loadLesson(ST.gIdx, ST.iIdx); // Reload current selected lesson
+    } else {
+        alert("Invalid License Key! Kripya sahi password dalein ya payment karein.");
+    }
+}
+
+function closePaywall() {
+    document.getElementById('paywall-overlay').style.display = 'none';
+    // Revert to Lesson 1.1 if they canceled out of a locked lesson
+    if(!isProUnlocked && ST.gIdx >= 2) {
+        loadLesson(0, 0); 
+    }
+}
+
+// ================= AUDIO ENGINE =================
+let soundEnabled = true;
+let ninjaMode = false;
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playSound(type) {
+    if (!soundEnabled) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+    
+    if (type === 'type') {
+        osc.type = 'triangle'; osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.05);
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.05);
+    } else {
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.15);
+    }
+}
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    document.getElementById('snd-status').textContent = soundEnabled ? "🔊 Sound: ON" : "🔇 Sound: OFF";
+    document.getElementById('snd-status').style.color = soundEnabled ? "var(--green)" : "var(--accent)";
+}
+function toggleNinja() {
+    ninjaMode = !ninjaMode;
+    document.getElementById('ninja-btn').textContent = ninjaMode ? "🥷 Ninja Mode: ON" : "🥷 Ninja Mode: OFF";
+    document.getElementById('ninja-btn').style.color = ninjaMode ? "var(--accent)" : "var(--text)";
+    document.getElementById('kb').style.opacity = ninjaMode ? "0" : "1";
+}
+
+// ================= PROGRESSIVE LESSON DATA =================
+const LESSONS = [
+    {
+        group: "1. Home Row (Free)",
+        items: [
+            { id: "1.1", name: "Home Row Basics", text: "asd fg hjkl;'" },
+            { id: "1.2", name: "Home Row Words", text: "kak sas hah lal dad kask kak sas hah lal" },
+            { id: "1.3", name: "Home Row Practice", text: "djkdj dfjlfj ds;s lqg djkdj dfjlfj ds;s lqg djkdj dfjlfj ds;s lqg" }
+        ]
+    },
+    {
+        group: "2. Top Row (Free)",
+        items: [
+            { id: "2.1", name: "Top Row Basics", text: "qwe rt yuiop[]" },
+            { id: "2.2", name: "Top Row Words", text: "er ty uy ij py oru er ty uy ij py" },
+            { id: "2.3", name: "Top + Home Mix", text: "qas wed rft yhu jik pol qas wed rft yhu jik qas wed rft yhu jik pol" }
+        ]
+    },
+    {
+        group: "3. Bottom Row (Pro)",
+        items: [
+            { id: "3.1", name: "Bottom Row Basics", text: "zxc vb nm,./" },
+            { id: "3.2", name: "Special Keys (घ)", text: "/ ? / ? / ? / ? / ? / ? / ? / ?" },
+            { id: "3.3", name: "Bottom Row Mix", text: "zxc vbn m,. xc nc vc /u j. zxc vbn m,. zxc vbn m,. xc nc vc /u j." }
+        ]
+    },
+    {
+        group: "4. Shift Keys (Pro)",
+        items: [
+            { id: "4.1", name: "Shift Basics", text: "A S D F G H J K L A S D F G H J K L" },
+            { id: "4.2", name: "Shift Mix", text: "Q W E R T Y U I O P Z X C V B N M < > ?" },
+            { id: "4.3", name: "Full Keyboard", text: "Qaz Wsx Edc Rfv Tgb Yhn Ujm Ikk Ool Ppp Qaz Wsx Edc Rfv Tgb Yhn Ujm Ikk Ool Ppp" }
+        ]
+    },
+    {
+        group: "5. Real Sentences (Pro)",
+        items: [
+            { id: "5.1", name: "Short Sentence", text: "jke uke lR; gSA Hkkjr egku ns'k gSA" },
+            { id: "5.2", name: "Medium Paragraph", text: "ikuh fi;ks vkSj LoLFk jgksA eka lcls I;kjh gksrh gSA fgUnh gekjh ekr`Hkk\"kk gS vkSj gesa bls lEeku nsuk pkfg,A f'k{kk ls gh lekt dk fodkl laHko gSA" },
+            { id: "5.3", name: "Long Paragraph", text: "foKku vkSj rduhd us ekuo thou dks ljy cuk fn;k gSA fujUrj vH;kl ls gh xfr vkSj lVhdrk vkrh gS] /kS;Z j[ksaA Hkkjrh; laLÑfr fo'o dh izkphuure laLÑfr;ksa esa ls ,d gSA i;kZoj.k dh j{kk djuk ge lHkh dh ftEesnkjh gSA" }
+        ]
+    },
+    {
+        group: "6. Pro Tests & Exams",
+        items: [
+            { id: "6.1", name: "शिक्षा का महत्व", text: "f'k{kk og 'ksjuh dk nw/k gS tks fi,xk og ngkM+sxkA Kku gh ekuo dk lPpk vkHkw\"k.k gSA f'kf{kr lekt gh ns'k dks vkxs c<+k ldrk gSA lgh f'k{kk ds fcuk euq\"; i'kq ds leku gSA" },
+            { id: "6.2", name: "सफलता का मार्ग", text: "dM+h esgur vkSj lgh fn'kk nksuksa lQyrk ds fy, t:jh gSaA tks O;fDr le; dk lgh mi;ksx djrk gS og dHkh ihNs ugha jgrkA vlQyrk ds fcuk lQyrk dk egr~o ugha gSA" },
+            { id: "6.3", name: "Master Typing Exam", text: "lPpkbz vkSj bZekunkjh ls fd;k x;k dke dHkh O;FkZ ugha tkrkA nwljksa dh HkykZ djuk gh euq\"; dk lPpk /keZ gSA Loe ij fo'okl j[kks vkSj vkxs c<+ksA thou esa dBhukb;k¡ vkrh gSa ijUrq muls fujk'k ugha gksuk pkfg,A" }
+        ]
+    }
+];
+
+// ================= KEYBOARD MAPPING =================
+const KEYBOARD_MAP = [
+  [
+    ['Backquote','`','`','~','f-pinky'], ['Digit1','1','1','!','f-pinky'], ['Digit2','2','2','/','f-ring'],
+    ['Digit3','3','3','रु','f-mid'], ['Digit4','4','4','+','f-index'], ['Digit5','5','5',':','f-index'],
+    ['Digit6','6','6','^','f-index'], ['Digit7','7','7','-','f-index'], ['Digit8','8','8','‘','f-mid'],
+    ['Digit9','9','9',';','f-ring'], ['Digit0','0','0','द्व','f-pinky'], ['Minus','-','-','ऋ','f-pinky'],
+    ['Equal','=','=','त्र','f-pinky'], ['Backspace','Bksp','','','wide']
+  ],
+  [
+    ['Tab','Tab','','','wide'],
+    ['KeyQ','Q','ु','फ','f-pinky'], ['KeyW','W','ू','ॅ','f-ring'], ['KeyE','E','म','म्','f-mid'],
+    ['KeyR','R','त','त्','f-index'], ['KeyT','T','ज','ज्','f-index'], ['KeyY','Y','ल','ल्','f-index'],
+    ['KeyU','U','न','न्','f-index'], ['KeyI','I','प','प्','f-mid'], ['KeyO','O','व','व्','f-ring'],
+    ['KeyP','P','च','च्','f-pinky'], ['BracketLeft','[','ख','ख्','f-pinky'], ['BracketRight',']',',','़','f-pinky'],
+    ['Backslash','\\','?','ः','f-pinky']
+  ],
+  [
+    ['CapsLock','Caps','','','wide'],
+    ['KeyA','A','ो','ौ','f-pinky'], ['KeyS','S','े','ै','f-ring'], ['KeyD','D','क','क्','f-mid'],
+    ['KeyF','F','ि','थ्','f-index'], ['KeyG','G','ह','ळ','f-index'], ['KeyH','H','ी','भ्','f-index'],
+    ['KeyJ','J','र','श्र','f-index'], ['KeyK','K','ा','ज्ञ','f-mid'], ['KeyL','L','स','स्','f-ring'],
+    ['Semicolon',';','य','रू','f-pinky'], ['Quote','\'','श','ष्','f-pinky'], ['Enter','Enter','','','xwide']
+  ],
+  [
+    ['ShiftLeft','Shift','','','xwide'],
+    ['KeyZ','Z','्र','र्','f-pinky'], ['KeyX','X','ग','ग्','f-ring'], ['KeyC','C','ब','ब्','f-mid'],
+    ['KeyV','V','अ','ट','f-index'], ['KeyB','B','इ','ठ','f-index'], ['KeyN','N','द','छ','f-index'],
+    ['KeyM','M','उ','ड','f-index'], ['Comma',',','ए','ढ','f-mid'], ['Period','.','ण','झ','f-ring'],
+    ['Slash','/','ध','घ','f-pinky'], ['ShiftRight','Shift','','','xwide']
+  ],
+  [
+    ['Space','Space','','','space f-thumb']
+  ]
+];
+
+const CHAR_TO_CODE = {
+    '`':'Backquote', '~':'Backquote', '1':'Digit1', '!':'Digit1', '2':'Digit2', '@':'Digit2', '3':'Digit3', '#':'Digit3', '4':'Digit4', '$':'Digit4', '5':'Digit5', '%':'Digit5', '6':'Digit6', '^':'Digit6', '7':'Digit7', '&':'Digit7', '8':'Digit8', '*':'Digit8', '9':'Digit9', '(':'Digit9', '0':'Digit0', ')':'Digit0', '-':'Minus', '_':'Minus', '=':'Equal', '+':'Equal',
+    'q':'KeyQ', 'Q':'KeyQ', 'w':'KeyW', 'W':'KeyW', 'e':'KeyE', 'E':'KeyE', 'r':'KeyR', 'R':'KeyR', 't':'KeyT', 'T':'KeyT', 'y':'KeyY', 'Y':'KeyY', 'u':'KeyU', 'U':'KeyU', 'i':'KeyI', 'I':'KeyI', 'o':'KeyO', 'O':'KeyO', 'p':'KeyP', 'P':'KeyP', '[':'BracketLeft', '{':'BracketLeft', ']':'BracketRight', '}':'BracketRight', '\\':'Backslash', '|':'Backslash',
+    'a':'KeyA', 'A':'KeyA', 's':'KeyS', 'S':'KeyS', 'd':'KeyD', 'D':'KeyD', 'f':'KeyF', 'F':'KeyF', 'g':'KeyG', 'G':'KeyG', 'h':'KeyH', 'H':'KeyH', 'j':'KeyJ', 'J':'KeyJ', 'k':'KeyK', 'K':'KeyK', 'l':'KeyL', 'L':'KeyL', ';':'Semicolon', ':':'Semicolon', '\'':'Quote', '"':'Quote',
+    'z':'KeyZ', 'Z':'KeyZ', 'x':'KeyX', 'X':'KeyX', 'c':'KeyC', 'C':'KeyC', 'v':'KeyV', 'V':'KeyV', 'b':'KeyB', 'B':'KeyB', 'n':'KeyN', 'N':'KeyN', 'm':'KeyM', 'M':'KeyM', ',':'Comma', '<':'Comma', '.':'Period', '>':'Period', '/':'Slash', '?':'Slash', ' ':'Space'
+};
+
+// ================= APP STATE =================
+let ST = {
+    gIdx: 0, iIdx: 0, text: "", typed: 0, correct: 0, timerInt: null, timeElapsed: 0, status: 'idle', finalWpm: 0, finalAcc: 0
+};
+
+window.onload = () => {
+    buildSidebar();
+    buildKeyboard();
+    loadLesson(0, 0);
+};
+
+function buildSidebar() {
+    const list = document.getElementById('lesson-list');
+    let html = '';
+    LESSONS.forEach((group, g) => {
+        html += `<div class="l-group"><div class="l-group-title">${group.group}</div>`;
+        group.items.forEach((item, i) => {
+            // Paywall Lock Icon logic
+            let lockIcon = (g >= 2 && !isProUnlocked) ? '<span class="locked-icon">🔒 Pro</span>' : '';
+            html += `<div class="l-item" id="nav-${g}-${i}" onclick="loadLesson(${g}, ${i})">
+                        <span>${item.id} - ${item.name}</span>
+                        ${lockIcon}
+                     </div>`;
+        });
+        html += `</div>`;
+    });
+    list.innerHTML = html;
+}
+
+function buildKeyboard() {
+    const kb = document.getElementById('kb-rows');
+    let html = '';
+    KEYBOARD_MAP.forEach(row => {
+        html += '<div class="kb-row">';
+        row.forEach(key => {
+            let isUtil = !key[2] && !key[3];
+            html += `<div class="key ${key[4] || ''}" id="k-${key[0]}">`;
+            if (isUtil) html += `<span class="util-label">${key[1]}</span>`;
+            else html += `<span class="hi-shift">${key[3]}</span><span class="hi-norm">${key[2]}</span><span class="en-label">${key[1]}</span>`;
+            html += `</div>`;
+        });
+        html += '</div>';
+    });
+    kb.innerHTML = html;
+}
+
+// ================= TYPING LOGIC =================
+function loadLesson(g, i) {
+    // Paywall Check
+    if(g >= 2 && !isProUnlocked) {
+        ST.gIdx = g; ST.iIdx = i; // Store intended lesson
+        document.getElementById('paywall-overlay').style.display = 'flex';
+        document.getElementById('license-key').value = '';
+        return;
+    }
+
+    document.querySelectorAll('.l-item').forEach(el => el.classList.remove('active'));
+    document.getElementById(`nav-${g}-${i}`).classList.add('active');
+    
+    ST.gIdx = g; ST.iIdx = i;
+    const lesson = LESSONS[g].items[i];
+    document.getElementById('lesson-title').textContent = `Lesson ${lesson.id} - ${lesson.name}`;
+    resetLesson();
+}
+
+function resetLesson() {
+    ST.text = LESSONS[ST.gIdx].items[ST.iIdx].text;
+    ST.typed = 0; ST.correct = 0; ST.timeElapsed = 0; ST.status = 'idle';
+    clearInterval(ST.timerInt);
+
+    document.getElementById('stat-wpm').textContent = '0';
+    document.getElementById('stat-acc').textContent = '0%';
+    document.getElementById('stat-time').textContent = '00:00';
+    document.getElementById('progress-bar').style.width = '0%';
+    
+    const input = document.getElementById('type-input');
+    input.value = ''; input.disabled = true;
+
+    document.getElementById('end-overlay').style.display = 'none';
+    document.getElementById('start-overlay').style.display = 'flex';
+    document.getElementById('cert-btn').style.display = 'none';
+    document.querySelectorAll('.key').forEach(k => k.classList.remove('glow'));
+    
+    renderText('');
+}
+
+function startByButton() {
+    startTypingAction();
+}
+
+window.addEventListener('keydown', (e) => {
+    // Prevent actions if paywall is open
+    if(document.getElementById('paywall-overlay').style.display === 'flex') return;
+
+    if(e.code === 'Enter') {
+        e.preventDefault();
+        if(ST.status === 'idle') {
+            startTypingAction();
+        } else if(ST.status === 'finished') {
+            let nI = ST.iIdx + 1, nG = ST.gIdx;
+            if (nI >= LESSONS[nG].items.length) { nG++; nI = 0; }
+            if (nG >= LESSONS.length) { alert("All Lessons Completed!"); nG = 0; nI = 0; }
+            loadLesson(nG, nI);
+        }
+    }
+    
+    if(e.code === 'Backspace' && ST.status !== 'active') {
+        e.preventDefault();
+        resetLesson();
+    }
+});
+
+function startTypingAction() {
+    ST.status = 'active';
+    document.getElementById('start-overlay').style.display = 'none';
+    const input = document.getElementById('type-input');
+    input.disabled = false; input.focus();
+    glowNextKey(ST.text[0]);
+}
+
+function renderText(typed) {
+    let html = '';
+    for (let i = 0; i < ST.text.length; i++) {
+        let char = ST.text[i];
+        let tChar = typed[i];
+        let cls = 'char';
+        if (tChar == null) { if (i === typed.length) cls += ' current'; } 
+        else if (tChar === char) cls += ' correct';
+        else cls += ' wrong';
+        html += `<span class="${cls}">${char === ' ' ? '&nbsp;' : char}</span>`;
+    }
+    document.getElementById('text-display').innerHTML = html;
+}
+
+document.getElementById('type-input').addEventListener('input', function() {
+    if (ST.status !== 'active') return;
+    let val = this.value;
+
+    if (ST.timeElapsed === 0 && val.length > 0) {
+        ST.timerInt = setInterval(() => {
+            ST.timeElapsed++;
+            if(ST.timeElapsed >= 300) { finishLesson(); return; } // 5 Min Limit
+            let min = Math.floor(ST.timeElapsed / 60); 
+            let sec = ST.timeElapsed % 60;
+            document.getElementById('stat-time').textContent = `${min<10?'0':''}${min}:${sec<10?'0':''}${sec}`;
+        }, 1000);
+    }
+
+    if (val.length > ST.text.length) { val = val.substring(0, ST.text.length); this.value = val; }
+
+    renderText(val);
+    document.getElementById('progress-bar').style.width = (val.length / ST.text.length) * 100 + '%';
+
+    ST.typed++;
+    let lastT = val[val.length - 1];
+    let target = ST.text[val.length - 1];
+    
+    if (lastT === target) { ST.correct++; playSound('type'); } 
+    else { playSound('error'); }
+
+    let acc = Math.round((ST.correct / val.length) * 100) || 0;
+    document.getElementById('stat-acc').textContent = acc + '%';
+    ST.finalAcc = acc;
+
+    let elMin = ST.timeElapsed / 60 || 0.01;
+    let wpm = Math.round((ST.typed / 5) / elMin);
+    document.getElementById('stat-wpm').textContent = wpm;
+    ST.finalWpm = wpm;
+
+    if (val.length < ST.text.length) {
+        glowNextKey(ST.text[val.length]);
+    } else {
+        finishLesson();
+    }
+});
+
+function finishLesson() {
+    ST.status = 'finished';
+    clearInterval(ST.timerInt);
+    document.getElementById('type-input').disabled = true;
+    document.querySelectorAll('.key').forEach(k => k.classList.remove('glow'));
+    
+    document.getElementById('end-stats-txt').innerHTML = `स्पीड: <b>${ST.finalWpm} WPM</b> | सटीकता: <b>${ST.finalAcc}%</b>`;
+    
+    // Only Pro users can generate Certificates
+    if(isProUnlocked && ST.finalWpm >= 15 && ST.finalAcc >= 80) {
+        document.getElementById('cert-btn').style.display = 'block';
+    }
+    
+    document.getElementById('end-overlay').style.display = 'flex';
+}
+
+// ================= CERTIFICATE GENERATOR =================
+function printCertificate() {
+    document.getElementById('cert-score').innerHTML = `Speed: ${ST.finalWpm} WPM | Accuracy: ${ST.finalAcc}%`;
+    window.print();
+}
+
+function glowNextKey(char) {
+    document.querySelectorAll('.key').forEach(k => k.classList.remove('glow'));
+    if (!char) return;
+    const requiresShift = /[A-Z~!@#$%^&*()_+{}|:"<>?]/.test(char);
+    if (requiresShift) {
+        document.getElementById('k-ShiftLeft').classList.add('glow');
+        document.getElementById('k-ShiftRight').classList.add('glow');
+    }
+    const code = CHAR_TO_CODE[char];
+    if (code) {
+        const keyEl = document.getElementById('k-' + code);
+        if (keyEl) keyEl.classList.add('glow');
+    }
+}
+
+// Visual Press Effect
+document.addEventListener('keydown', e => { 
+    if(ST.status === 'active' && document.getElementById('paywall-overlay').style.display !== 'flex') {
+        let el = document.getElementById('k-' + e.code); 
+        if (el) el.classList.add('active-press'); 
+    }
+});
+document.addEventListener('keyup', e => { 
+    let el = document.getElementById('k-' + e.code); 
+    if (el) el.classList.remove('active-press'); 
+});
+</script>
+</body>
+</html>
