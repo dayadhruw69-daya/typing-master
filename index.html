@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Typing Master Pro v14.0</title>
+<title>Ultimate Typing Master Pro v13.0</title>
 <style>
-  /* ================= लॉगिन स्क्रीन डिज़ाइन ================= */
+/* ================= लॉगिन स्क्रीन डिज़ाइन ================= */
 .login-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -78,10 +78,9 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color
 .lesson-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 .l-group { margin-bottom: 10px; }
 .l-group-title { font-size: 12px; color: var(--green); text-transform: uppercase; padding: 6px 20px; font-weight: bold; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2px;}
-.l-item { padding: 10px 20px 10px 30px; cursor: pointer; font-size: 14px; color: #cbd5e1; transition: 0.2s; border-left: 4px solid transparent; display: flex; justify-content: space-between; align-items: center;}
+.l-item { padding: 10px 20px 10px 30px; cursor: pointer; font-size: 14px; color: #cbd5e1; transition: 0.2s; border-left: 4px solid transparent; }
 .l-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
 .l-item.active { background: rgba(59,130,246,0.15); border-left-color: var(--primary); color: #fff; font-weight: bold; }
-.locked-icon { color: var(--accent); font-size: 12px; }
 
 /* Main Area */
 .main-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative;}
@@ -125,17 +124,6 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color
 .end-controls span { color: var(--gold); background: #000; padding: 4px 10px; border-radius: 5px; margin-right: 5px; font-size: 14px;}
 .btn-cert { background: var(--gold); color: #000; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 15px; display: none;}
 
-/* PRO PAYWALL MODAL */
-.pro-modal { background: var(--surface); padding: 40px; border-radius: 15px; border: 2px solid var(--gold); text-align: center; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
-.pro-modal h2 { color: var(--gold); margin-bottom: 15px; font-size: 26px; }
-.pro-modal p { color: var(--text-muted); font-size: 15px; margin-bottom: 20px; line-height: 1.5; }
-.upi-box { background: rgba(0,0,0,0.5); border: 1px dashed var(--green); padding: 15px; border-radius: 8px; font-size: 22px; color: var(--green); margin-bottom: 25px; font-weight: bold; letter-spacing: 1px;}
-.license-input { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid var(--border); background: #0b0f19; color: #fff; margin-bottom: 20px; text-align: center; }
-.license-input:focus { border-color: var(--gold); outline: none; }
-.pro-btns { display: flex; gap: 10px; justify-content: center; }
-.btn-unlock { background: var(--green); color: #000; border: none; padding: 12px 25px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 16px; }
-.btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 12px 25px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 16px; }
-
 /* Visual Keyboard */
 .keyboard { background: #0b0f19; border: 2px solid var(--border); border-radius: 12px; padding: 15px; margin-top: 0; user-select: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: opacity 0.3s;}
 .kb-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 6px; }
@@ -155,18 +143,39 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color
 .key.glow { background: rgba(59,130,246,0.2); border-color: #fff !important; transform: translateY(-2px); border-bottom-width: 6px; box-shadow: 0 0 15px var(--primary), inset 0 0 10px rgba(59,130,246,0.5) !important;}
 .key.active-press { transform: translateY(3px); border-bottom-width: 1px; filter: brightness(0.8); background: rgba(255,255,255,0.1); }
 
-/* Print Styles for Certificate */
-@media print {
-    body * { visibility: hidden; }
-    #certificate, #certificate * { visibility: visible; }
-    #certificate { position: absolute; left: 0; top: 0; width: 100%; text-align: center; padding: 50px; background: #fff; color: #000; border: 10px solid var(--primary); }
-    .c-title { font-size: 40px; color: var(--primary); margin-bottom: 20px;}
-    .c-score { font-size: 30px; font-weight: bold; color: var(--green); margin: 20px 0;}
+/* ================= सर्टिफ़िकेट का CSS डिज़ाइन ================= */
+.cert-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10000;
+}
+.cert-box {
+    background: #fff; color: #000;
+    width: 600px; padding: 40px; text-align: center;
+    border: 10px solid #d4af37;
+    border-radius: 10px; font-family: 'Georgia', serif;
+    position: relative;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+}
+.cert-box h1 { color: #d4af37; font-size: 38px; margin-bottom: 5px; text-transform: uppercase;}
+.cert-box h3 { font-size: 22px; color: #555; margin-top: 0; margin-bottom: 20px;}
+.cert-name { 
+    font-size: 36px; font-weight: bold; color: #b81d1d; 
+    border-bottom: 2px solid #000; display: inline-block; 
+    padding-bottom: 5px; margin: 20px 0; min-width: 300px; 
+}
+.cert-details { font-size: 18px; margin-bottom: 30px; line-height: 1.6;}
+.cert-btn-close {
+    background: #2563eb; color: #fff; padding: 12px 25px;
+    border: none; border-radius: 5px; font-size: 16px; cursor: pointer;
+    font-weight: bold;
 }
 </style>
 </head>
 <body>
-  <!-- ================= लॉगिन स्क्रीन HTML ================= -->
+
+<!-- ================= लॉगिन स्क्रीन HTML ================= -->
 <div id="loginOverlay" class="login-overlay">
     <div class="login-card">
         <h2>स्वागत है!</h2>
@@ -179,7 +188,7 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color
 <div class="sidebar">
     <div class="logo">
         <h1>Typing Master</h1>
-        <p>PRO COMMERCIAL EDITION</p>
+        <p>ENTERPRISE EDITION v13.0</p>
     </div>
     <div class="lesson-list" id="lesson-list"></div>
 </div>
@@ -201,27 +210,10 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color
         </div>
 
         <div class="typing-container">
-            <!-- Start Overlay -->
             <div class="overlay" id="start-overlay" style="display:flex;">
                 <button class="btn-start" onclick="startByButton()">Press ENTER to Start</button>
             </div>
             
-            <!-- Pro Paywall Overlay -->
-            <div class="overlay" id="paywall-overlay" style="z-index: 50;">
-                <div class="pro-modal">
-                    <h2>🔒 Unlock Pro Version</h2>
-                    <p>आगे के सभी एडवांस लेसन्स और सर्टिफिकेट प्रिंट करने की सुविधा के लिए ₹50 का वन-टाइम पेमेंट करें।</p>
-                    <div class="upi-box">UPI ID: 8319753340@upi</div>
-                    <p>पेमेंट करने के बाद यहाँ अपनी सीक्रेट लाइसेंस की (License Key) डालें:</p>
-                    <input type="text" id="license-key" class="license-input" placeholder="Enter Secret Password">
-                    <div class="pro-btns">
-                        <button class="btn-unlock" onclick="verifyLicense()">Unlock Now</button>
-                        <button class="btn-cancel" onclick="closePaywall()">Cancel</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- End Overlay -->
             <div class="overlay" id="end-overlay">
                 <div class="end-msg">🎉 अभ्यास पूरा हुआ!</div>
                 <div class="end-stats" id="end-stats-txt">स्पीड: 0 WPM | सटीकता: 0%</div>
@@ -229,7 +221,8 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color
                     <div><span>Enter</span> Next Lesson</div>
                     <div><span>Backspace</span> Restart</div>
                 </div>
-                <button class="btn-cert" id="cert-btn" onclick="printCertificate()">🖨️ Print Certificate</button>
+                <!-- यहाँ मैंने बटन का फंक्शन अपडेट कर दिया है -->
+                <button class="btn-cert" id="cert-btn" onclick="printCertificate()">🖨️ View Certificate</button>
             </div>
             
             <div class="text-display kruti-font" id="text-display"></div>
@@ -242,41 +235,23 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color
     </div>
 </div>
 
-<!-- Hidden Certificate -->
-<div id="certificate" style="display:none;">
-    <h1 class="c-title">Certificate of Achievement</h1>
-    <h2>This certifies that you have successfully completed the Typing Test.</h2>
-    <div class="c-score" id="cert-score">Speed: 0 WPM | Accuracy: 0%</div>
-    <p>Typing Master Pro Enterprise Edition</p>
+<!-- ================= नया सर्टिफ़िकेट HTML ================= -->
+<div id="certOverlay" class="cert-overlay hidden">
+    <div class="cert-box">
+        <h1>Certificate of Achievement</h1>
+        <h3>Typing Master Pro</h3>
+        <p>यह प्रमाणित किया जाता है कि</p>
+        <div id="certStudentName" class="cert-name">Student Name</div>
+        <p class="cert-details">
+            ने सफलतापूर्वक अपना टाइपिंग कोर्स पूरा कर लिया है।<br>
+            <strong>स्पीड:</strong> <span id="certWPM">0</span> WPM &nbsp;|&nbsp;
+            <strong>सटीकता (Accuracy):</strong> <span id="certAcc">0</span>%
+        </p>
+        <button class="cert-btn-close" onclick="document.getElementById('certOverlay').classList.add('hidden')">बंद करें</button>
+    </div>
 </div>
 
 <script>
-// ================= LICENSE & PAYWALL LOGIC =================
-const SECRET_PASSWORD = "typingsoftwared@y@123445";
-let isProUnlocked = localStorage.getItem('htm_pro_active') === 'true';
-
-function verifyLicense() {
-    const inputKey = document.getElementById('license-key').value.trim();
-    if (inputKey === SECRET_PASSWORD) {
-        localStorage.setItem('htm_pro_active', 'true');
-        isProUnlocked = true;
-        alert("Success! Premium Version Unlocked. All lessons and certificate features are now available offline.");
-        document.getElementById('paywall-overlay').style.display = 'none';
-        buildSidebar(); // Rebuild sidebar to remove lock icons
-        loadLesson(ST.gIdx, ST.iIdx); // Reload current selected lesson
-    } else {
-        alert("Invalid License Key! Kripya sahi password dalein ya payment karein.");
-    }
-}
-
-function closePaywall() {
-    document.getElementById('paywall-overlay').style.display = 'none';
-    // Revert to Lesson 1.1 if they canceled out of a locked lesson
-    if(!isProUnlocked && ST.gIdx >= 2) {
-        loadLesson(0, 0); 
-    }
-}
-
 // ================= AUDIO ENGINE =================
 let soundEnabled = true;
 let ninjaMode = false;
@@ -318,51 +293,48 @@ const LESSONS = [
     {
         group: "1. होम रो (सरल शब्द)",
         items: [
-            { id: "1.1", name: "बेसिक शब्द", text: "jke jke jke dke dke dke" }, /* राम राम काम काम */
-            { id: "1.2", name: "छोटे वाक्य", text: "jke py a dke dj a" }, /* राम चल । काम कर । */
-            { id: "1.3", name: "पूरा वाक्य", text: "jke ?kj py a ty ih a" } /* राम घर चल । जल पी । */
+            { id: "1.1", name: "बेसिक शब्द", text: "jke jke jke dke dke dke" }, 
+            { id: "1.2", name: "छोटे वाक्य", text: "jke py a dke dj a" }, 
+            { id: "1.3", name: "पूरा वाक्य", text: "jke ?kj py a ty ih a" } 
         ]
     },
     {
         group: "2. टॉप रो (सरल वाक्य)",
         items: [
-            { id: "2.1", name: "नए शब्द", text: "ns'k ns'k esjk esjk" }, /* देश देश मेरा मेरा */
-            { id: "2.2", name: "वाक्य 1", text: "Hkkjr esjk ns'k gS a" }, /* भारत मेरा देश है । */
-            { id: "2.3", name: "वाक्य 2", text: "vkt dk fnu vPNk gS a" } /* आज का दिन अच्छा है । */
+            { id: "2.1", name: "नए शब्द", text: "ns'k ns'k esjk esjk" }, 
+            { id: "2.2", name: "वाक्य 1", text: "Hkkjr esjk ns'k gS a" }, 
+            { id: "2.3", name: "वाक्य 2", text: "vkt dk fnu vPNk gS a" } 
         ]
     },
     {
         group: "3. बॉटम रो (प्रीमियम/Pro)",
         items: [
-            { id: "3.1", name: "कठिन शब्द", text: "fdlku fdlku lp lp" }, /* किसान किसान सच सच */
-            { id: "3.2", name: "बड़े वाक्य", text: "esjs firk th ,d fdlku gSa a" } /* मेरे पिता जी एक किसान हैं । */
-        ]
-    },
-            { id: "3.3", name: "Bottom Row Mix", text: "zxc vbn m,. xc nc vc /u j. zxc vbn m,. zxc vbn m,. xc nc vc /u j." }
+            { id: "3.1", name: "कठिन शब्द", text: "fdlku fdlku lp lp" }, 
+            { id: "3.2", name: "बड़े वाक्य", text: "esjs firk th ,d fdlku gSa a" } 
         ]
     },
     {
-        group: "4. Shift Keys (Pro)",
+        group: "4. Shift Keys (आधे अक्षर)",
         items: [
             { id: "4.1", name: "Shift Basics", text: "A S D F G H J K L A S D F G H J K L" },
             { id: "4.2", name: "Shift Mix", text: "Q W E R T Y U I O P Z X C V B N M < > ?" },
-            { id: "4.3", name: "Full Keyboard", text: "Qaz Wsx Edc Rfv Tgb Yhn Ujm Ikk Ool Ppp Qaz Wsx Edc Rfv Tgb Yhn Ujm Ikk Ool Ppp" }
+            { id: "4.3", name: "Full Keyboard", text: "Qaz Wsx Edc Rfv Tgb Yhn Ujm Ikk Ool Ppp Qaz Wsx Edc Rfv Tgb Yhn Ujm Ikk Ool Ppp" } 
         ]
     },
     {
-        group: "5. Real Sentences (Pro)",
+        group: "5. Real Sentences (वाक्य)",
         items: [
             { id: "5.1", name: "Short Sentence", text: "jke uke lR; gSA Hkkjr egku ns'k gSA" },
-            { id: "5.2", name: "Medium Paragraph", text: "ikuh fi;ks vkSj LoLFk jgksA eka lcls I;kjh gksrh gSA fgUnh gekjh ekr`Hkk\"kk gS vkSj gesa bls lEeku nsuk pkfg,A f'k{kk ls gh lekt dk fodkl laHko gSA" },
-            { id: "5.3", name: "Long Paragraph", text: "foKku vkSj rduhd us ekuo thou dks ljy cuk fn;k gSA fujUrj vH;kl ls gh xfr vkSj lVhdrk vkrh gS] /kS;Z j[ksaA Hkkjrh; laLÑfr fo'o dh izkphuure laLÑfr;ksa esa ls ,d gSA i;kZoj.k dh j{kk djuk ge lHkh dh ftEesnkjh gSA" }
+            { id: "5.2", name: "Medium Paragraph", text: "ikuh fi;ks vkSj LoLFk jgksA eka lcls I;kjh gksrh gSA fgUnh gekjh ekr`Hkk\"kk gS vkSj gesa bls lEeku nsuk pkfg,A f'k{kk ls gh lekt dk fodkl laHko gSA" }, 
+            { id: "5.3", name: "Long Paragraph", text: "foKku vkSj rduhd us ekuo thou dks ljy cuk fn;k gSA fujUrj vH;kl ls gh xfr vkSj lVhdrk vkrh gS] /kS;Z j[ksaA Hkkjrh; laLÑfr fo'o dh izkphuure laLÑfr;ksa esa ls ,d gSA i;kZoj.k dh j{kk djuk ge lHkh dh ftEesnkjh gSA" } 
         ]
     },
     {
-        group: "6. Pro Tests & Exams",
+        group: "6. शिक्षा और दर्शन (Pro Tests)",
         items: [
-            { id: "6.1", name: "शिक्षा का महत्व", text: "f'k{kk og 'ksjuh dk nw/k gS tks fi,xk og ngkM+sxkA Kku gh ekuo dk lPpk vkHkw\"k.k gSA f'kf{kr lekt gh ns'k dks vkxs c<+k ldrk gSA lgh f'k{kk ds fcuk euq\"; i'kq ds leku gSA" },
-            { id: "6.2", name: "सफलता का मार्ग", text: "dM+h esgur vkSj lgh fn'kk nksuksa lQyrk ds fy, t:jh gSaA tks O;fDr le; dk lgh mi;ksx djrk gS og dHkh ihNs ugha jgrkA vlQyrk ds fcuk lQyrk dk egr~o ugha gSA" },
-            { id: "6.3", name: "Master Typing Exam", text: "lPpkbz vkSj bZekunkjh ls fd;k x;k dke dHkh O;FkZ ugha tkrkA nwljksa dh HkykZ djuk gh euq\"; dk lPpk /keZ gSA Loe ij fo'okl j[kks vkSj vkxs c<+ksA thou esa dBhukb;k¡ vkrh gSa ijUrq muls fujk'k ugha gksuk pkfg,A" }
+            { id: "6.1", name: "शिक्षा का महत्व", text: "f'k{kk og 'ksjuh dk nw/k gS tks fi,xk og ngkM+sxkA Kku gh ekuo dk lPpk vkHkw\"k.k gSA f'kf{kr lekt gh ns'k dks vkxs c<+k ldrk gSA lgh f'k{kk ds fcuk euq\"; i'kq ds leku gSA" }, 
+            { id: "6.2", name: "सफलता का मार्ग", text: "dM+h esgur vkSj lgh fn'kk nksuksa lQyrk ds fy, t:jh gSaA tks O;fDr le; dk lgh mi;ksx djrk gS og dHkh ihNs ugha jgrkA vlQyrk ds fcuk lQyrk dk egr~o ugha gSA" }, 
+            { id: "6.3", name: "Pro Typing Exam", text: "lPpkbz vkSj bZekunkjh ls fd;k x;k dke dHkh O;FkZ ugha tkrkA nwljksa dh HkykZ djuk gh euq\"; dk lPpk /keZ gSA Loe ij fo'okl j[kks vkSj vkxs c<+ksA thou esa dBhukb;k¡ vkrh gSa ijUrq muls fujk'k ugha gksuk pkfg,A" } 
         ]
     }
 ];
@@ -427,12 +399,7 @@ function buildSidebar() {
     LESSONS.forEach((group, g) => {
         html += `<div class="l-group"><div class="l-group-title">${group.group}</div>`;
         group.items.forEach((item, i) => {
-            // Paywall Lock Icon logic
-            let lockIcon = (g >= 2 && !isProUnlocked) ? '<span class="locked-icon">🔒 Pro</span>' : '';
-            html += `<div class="l-item" id="nav-${g}-${i}" onclick="loadLesson(${g}, ${i})">
-                        <span>${item.id} - ${item.name}</span>
-                        ${lockIcon}
-                     </div>`;
+            html += `<div class="l-item" id="nav-${g}-${i}" onclick="loadLesson(${g}, ${i})">${item.id} - ${item.name}</div>`;
         });
         html += `</div>`;
     });
@@ -458,14 +425,6 @@ function buildKeyboard() {
 
 // ================= TYPING LOGIC =================
 function loadLesson(g, i) {
-    // Paywall Check
-    if(g >= 2 && !isProUnlocked) {
-        ST.gIdx = g; ST.iIdx = i; // Store intended lesson
-        document.getElementById('paywall-overlay').style.display = 'flex';
-        document.getElementById('license-key').value = '';
-        return;
-    }
-
     document.querySelectorAll('.l-item').forEach(el => el.classList.remove('active'));
     document.getElementById(`nav-${g}-${i}`).classList.add('active');
     
@@ -501,9 +460,6 @@ function startByButton() {
 }
 
 window.addEventListener('keydown', (e) => {
-    // Prevent actions if paywall is open
-    if(document.getElementById('paywall-overlay').style.display === 'flex') return;
-
     if(e.code === 'Enter') {
         e.preventDefault();
         if(ST.status === 'idle') {
@@ -551,7 +507,7 @@ document.getElementById('type-input').addEventListener('input', function() {
     if (ST.timeElapsed === 0 && val.length > 0) {
         ST.timerInt = setInterval(() => {
             ST.timeElapsed++;
-            if(ST.timeElapsed >= 300) { finishLesson(); return; } // 5 Min Limit
+            if(ST.timeElapsed >= 300) { finishLesson(); return; } 
             let min = Math.floor(ST.timeElapsed / 60); 
             let sec = ST.timeElapsed % 60;
             document.getElementById('stat-time').textContent = `${min<10?'0':''}${min}:${sec<10?'0':''}${sec}`;
@@ -594,8 +550,7 @@ function finishLesson() {
     
     document.getElementById('end-stats-txt').innerHTML = `स्पीड: <b>${ST.finalWpm} WPM</b> | सटीकता: <b>${ST.finalAcc}%</b>`;
     
-    // Only Pro users can generate Certificates
-    if(isProUnlocked && ST.finalWpm >= 15 && ST.finalAcc >= 80) {
+    if(ST.finalWpm >= 15 && ST.finalAcc >= 80) {
         document.getElementById('cert-btn').style.display = 'block';
     }
     
@@ -604,8 +559,8 @@ function finishLesson() {
 
 // ================= CERTIFICATE GENERATOR =================
 function printCertificate() {
-    document.getElementById('cert-score').innerHTML = `Speed: ${ST.finalWpm} WPM | Accuracy: ${ST.finalAcc}%`;
-    window.print();
+    // अब यह बटन आपके नए सर्टिफ़िकेट को ट्रिगर करेगा
+    showCertificate(ST.finalWpm, ST.finalAcc);
 }
 
 function glowNextKey(char) {
@@ -625,7 +580,7 @@ function glowNextKey(char) {
 
 // Visual Press Effect
 document.addEventListener('keydown', e => { 
-    if(ST.status === 'active' && document.getElementById('paywall-overlay').style.display !== 'flex') {
+    if(ST.status === 'active') {
         let el = document.getElementById('k-' + e.code); 
         if (el) el.classList.add('active-press'); 
     }
@@ -633,15 +588,13 @@ document.addEventListener('keydown', e => {
 document.addEventListener('keyup', e => { 
     let el = document.getElementById('k-' + e.code); 
     if (el) el.classList.remove('active-press'); 
-});
-  // ================= लॉगिन और नाम सेव करने का लॉजिक =================
+}); 
+
+// ================= लॉगिन और नाम सेव करने का लॉजिक =================
 document.addEventListener("DOMContentLoaded", function() {
-    // चेक करें कि क्या स्टूडेंट का नाम पहले से सेव है
     let savedName = localStorage.getItem("typingStudentName");
     if(savedName) {
-        // अगर नाम सेव है, तो लॉगिन स्क्रीन हटा दें
         document.getElementById("loginOverlay").classList.add("hidden");
-        // यहाँ हम बाद में स्टूडेंट का नाम डैशबोर्ड पर दिखाएंगे
     }
 });
 
@@ -653,78 +606,23 @@ function startTypingApp() {
         return;
     }
     
-    // स्टूडेंट का नाम ब्राउज़र में हमेशा के लिए सेव कर लें
     localStorage.setItem("typingStudentName", nameInput);
-    
-    // लॉगिन स्क्रीन को छुपा दें
     document.getElementById("loginOverlay").classList.add("hidden");
-    
-    // सफलता का मैसेज (ऑप्शनल)
     console.log("Welcome, " + nameInput);
 }
-  // ================= सर्टिफ़िकेट जनरेट करने का फंक्शन =================
+
+// ================= सर्टिफ़िकेट जनरेट करने का फंक्शन =================
 function showCertificate(finalWPM, finalAccuracy) {
-    // 1. स्टूडेंट का नाम सिस्टम से निकालें
     let savedName = localStorage.getItem("typingStudentName");
     if (!savedName || savedName.trim() === "") {
-        savedName = "हमारे होनहार छात्र"; // अगर किसी वजह से नाम न मिले
+        savedName = "हमारे होनहार छात्र"; 
     }
 
-    // 2. सर्टिफ़िकेट के अंदर स्टूडेंट का डेटा भरें
     document.getElementById("certStudentName").innerText = savedName;
     document.getElementById("certWPM").innerText = finalWPM;
     document.getElementById("certAcc").innerText = finalAccuracy;
-
-    // 3. सर्टिफ़िकेट को स्क्रीन पर पॉप-अप की तरह दिखाएं
     document.getElementById("certOverlay").classList.remove("hidden");
 }
-</script> 
-</body>
-  <style>
-.cert-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 10000;
-}
-.cert-box {
-    background: #fff; color: #000;
-    width: 600px; padding: 40px; text-align: center;
-    border: 10px solid #d4af37; /* गोल्ड कलर का शानदार बॉर्डर */
-    border-radius: 10px; font-family: 'Georgia', serif;
-    position: relative;
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
-}
-.cert-box h1 { color: #d4af37; font-size: 38px; margin-bottom: 5px; text-transform: uppercase;}
-.cert-box h3 { font-size: 22px; color: #555; margin-top: 0; margin-bottom: 20px;}
-.cert-name { 
-    font-size: 36px; font-weight: bold; color: #b81d1d; 
-    border-bottom: 2px solid #000; display: inline-block; 
-    padding-bottom: 5px; margin: 20px 0; min-width: 300px; 
-}
-.cert-details { font-size: 18px; margin-bottom: 30px; line-height: 1.6;}
-.cert-btn {
-    background: #2563eb; color: #fff; padding: 12px 25px;
-    border: none; border-radius: 5px; font-size: 16px; cursor: pointer;
-    font-weight: bold;
-}
-.hidden { display: none !important; }
-</style>
-
-<div id="certOverlay" class="cert-overlay hidden">
-    <div class="cert-box">
-        <h1>Certificate of Achievement</h1>
-        <h3>Typing Master Pro</h3>
-        <p>यह प्रमाणित किया जाता है कि</p>
-        <div id="certStudentName" class="cert-name">Student Name</div>
-        <p class="cert-details">
-            ने सफलतापूर्वक अपना टाइपिंग कोर्स पूरा कर लिया है।<br>
-            <strong>स्पीड:</strong> <span id="certWPM">0</span> WPM &nbsp;|&nbsp;
-            <strong>सटीकता (Accuracy):</strong> <span id="certAcc">0</span>%
-        </p>
-        <button class="cert-btn" onclick="document.getElementById('certOverlay').classList.add('hidden')">बंद करें</button>
-    </div>
-</div>
+</script>
 </body>
 </html>
-
