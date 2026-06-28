@@ -662,6 +662,69 @@ function startTypingApp() {
     // सफलता का मैसेज (ऑप्शनल)
     console.log("Welcome, " + nameInput);
 }
+  // ================= सर्टिफ़िकेट जनरेट करने का फंक्शन =================
+function showCertificate(finalWPM, finalAccuracy) {
+    // 1. स्टूडेंट का नाम सिस्टम से निकालें
+    let savedName = localStorage.getItem("typingStudentName");
+    if (!savedName || savedName.trim() === "") {
+        savedName = "हमारे होनहार छात्र"; // अगर किसी वजह से नाम न मिले
+    }
+
+    // 2. सर्टिफ़िकेट के अंदर स्टूडेंट का डेटा भरें
+    document.getElementById("certStudentName").innerText = savedName;
+    document.getElementById("certWPM").innerText = finalWPM;
+    document.getElementById("certAcc").innerText = finalAccuracy;
+
+    // 3. सर्टिफ़िकेट को स्क्रीन पर पॉप-अप की तरह दिखाएं
+    document.getElementById("certOverlay").classList.remove("hidden");
+}
 </script> 
 </body>
+  <style>
+.cert-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10000;
+}
+.cert-box {
+    background: #fff; color: #000;
+    width: 600px; padding: 40px; text-align: center;
+    border: 10px solid #d4af37; /* गोल्ड कलर का शानदार बॉर्डर */
+    border-radius: 10px; font-family: 'Georgia', serif;
+    position: relative;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+}
+.cert-box h1 { color: #d4af37; font-size: 38px; margin-bottom: 5px; text-transform: uppercase;}
+.cert-box h3 { font-size: 22px; color: #555; margin-top: 0; margin-bottom: 20px;}
+.cert-name { 
+    font-size: 36px; font-weight: bold; color: #b81d1d; 
+    border-bottom: 2px solid #000; display: inline-block; 
+    padding-bottom: 5px; margin: 20px 0; min-width: 300px; 
+}
+.cert-details { font-size: 18px; margin-bottom: 30px; line-height: 1.6;}
+.cert-btn {
+    background: #2563eb; color: #fff; padding: 12px 25px;
+    border: none; border-radius: 5px; font-size: 16px; cursor: pointer;
+    font-weight: bold;
+}
+.hidden { display: none !important; }
+</style>
+
+<div id="certOverlay" class="cert-overlay hidden">
+    <div class="cert-box">
+        <h1>Certificate of Achievement</h1>
+        <h3>Typing Master Pro</h3>
+        <p>यह प्रमाणित किया जाता है कि</p>
+        <div id="certStudentName" class="cert-name">Student Name</div>
+        <p class="cert-details">
+            ने सफलतापूर्वक अपना टाइपिंग कोर्स पूरा कर लिया है।<br>
+            <strong>स्पीड:</strong> <span id="certWPM">0</span> WPM &nbsp;|&nbsp;
+            <strong>सटीकता (Accuracy):</strong> <span id="certAcc">0</span>%
+        </p>
+        <button class="cert-btn" onclick="document.getElementById('certOverlay').classList.add('hidden')">बंद करें</button>
+    </div>
+</div>
+</body>
 </html>
+
