@@ -5,6 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ultimate Typing Master Pro v14.0</title>
 <style>
+  /* ================= लॉगिन स्क्रीन डिज़ाइन ================= */
+.login-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(11, 15, 25, 0.95);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center; align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+.login-card {
+    background: #1e2538;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    text-align: center;
+    color: #fff;
+    width: 350px;
+    border: 2px solid #3b82f6;
+    font-family: 'Arial', sans-serif;
+}
+.login-card h2 { 
+    margin-top: 0; 
+    color: #3b82f6; 
+    font-size: 28px;
+}
+.login-card p {
+    color: #9ca3af;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+.login-card input {
+    width: 100%; padding: 15px; margin-bottom: 20px;
+    border: 1px solid #4b5563; border-radius: 8px;
+    background: #0b0f19; color: #fff; font-size: 16px;
+    box-sizing: border-box; outline: none;
+}
+.login-card input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+.login-card button {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff; border: none; font-weight: bold;
+    padding: 15px 25px; border-radius: 8px; font-size: 18px;
+    cursor: pointer; transition: transform 0.2s; width: 100%;
+}
+.login-card button:hover { 
+    transform: scale(1.05); 
+}
+.hidden { display: none !important; }
 /* ================= PREMIUM THEME ================= */
 :root {
   --bg: #0b0f19; --surface: #151a28; --surface-hover: #1e2538;
@@ -114,6 +166,15 @@ body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color
 </style>
 </head>
 <body>
+  <!-- ================= लॉगिन स्क्रीन HTML ================= -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+        <h2>स्वागत है!</h2>
+        <p>अपनी हिंदी टाइपिंग यात्रा शुरू करने के लिए अपना नाम दर्ज करें:</p>
+        <input type="text" id="userNameInput" placeholder="अपना पूरा नाम यहाँ लिखें..." autocomplete="off">
+        <button onclick="startTypingApp()">शुरू करें 🚀</button>
+    </div>
+</div>
 
 <div class="sidebar">
     <div class="logo">
@@ -571,6 +632,34 @@ document.addEventListener('keyup', e => {
     let el = document.getElementById('k-' + e.code); 
     if (el) el.classList.remove('active-press'); 
 });
-</script>
+  // ================= लॉगिन और नाम सेव करने का लॉजिक =================
+document.addEventListener("DOMContentLoaded", function() {
+    // चेक करें कि क्या स्टूडेंट का नाम पहले से सेव है
+    let savedName = localStorage.getItem("typingStudentName");
+    if(savedName) {
+        // अगर नाम सेव है, तो लॉगिन स्क्रीन हटा दें
+        document.getElementById("loginOverlay").classList.add("hidden");
+        // यहाँ हम बाद में स्टूडेंट का नाम डैशबोर्ड पर दिखाएंगे
+    }
+});
+
+function startTypingApp() {
+    let nameInput = document.getElementById("userNameInput").value.trim();
+    
+    if(nameInput === "") {
+        alert("कृपया आगे बढ़ने से पहले अपना नाम दर्ज करें!");
+        return;
+    }
+    
+    // स्टूडेंट का नाम ब्राउज़र में हमेशा के लिए सेव कर लें
+    localStorage.setItem("typingStudentName", nameInput);
+    
+    // लॉगिन स्क्रीन को छुपा दें
+    document.getElementById("loginOverlay").classList.add("hidden");
+    
+    // सफलता का मैसेज (ऑप्शनल)
+    console.log("Welcome, " + nameInput);
+}
+</script> 
 </body>
 </html>
